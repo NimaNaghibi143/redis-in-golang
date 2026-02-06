@@ -38,6 +38,7 @@ func (s *Server) start() error {
 	return s.acceptLoop()
 }
 
+// An infinit loop for accepting a connection and using GOROUTINE to keep the conn in the background
 func (s *Server) acceptLoop() error {
 	for {
 		conn, err := s.ln.Accept()
@@ -49,6 +50,7 @@ func (s *Server) acceptLoop() error {
 	}
 }
 
+// where we read the data in the server conn
 func (s *Server) handleConn(conn net.Conn) {
 
 }
