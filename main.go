@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log/slog"
 	"net"
 )
@@ -15,7 +16,9 @@ type Config struct {
 
 type Server struct {
 	Config
-	ln net.Listener
+	peers     map[*Peer]bool
+	ln        net.Listener
+	addPeerCh chan *Peer
 }
 
 // factory method, enduring the server has a valid port to listen on
@@ -24,7 +27,9 @@ func NewServer(cfg Config) *Server {
 		cfg.ListenAddr = defaultListenAddr
 	}
 	return &Server{
-		Config: cfg,
+		Config:    cfg,
+		peers:     make(map[*Peer]bool),
+		addPeerCh: make(chan *Peer),
 	}
 }
 
@@ -37,6 +42,17 @@ func (s *Server) start() error {
 	s.ln = ln
 
 	return s.acceptLoop()
+}
+
+func (s *Server) loop() {
+	for {
+		select {
+		case peer := <-s.addPeerCh:
+			s.peers[peer] = true
+		default:
+			fmt.Println("Yo")
+		}
+	}
 }
 
 // An infinit loop for accepting a connection and using GOROUTINE to keep the conn in the background
