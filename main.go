@@ -28,6 +28,7 @@ func NewServer(cfg Config) *Server {
 	}
 }
 
+// Opens the socket and resolves the port on the OS
 func (s *Server) start() error {
 	ln, err := net.Listen("tcp", s.ListenAddr)
 	if err != nil {
