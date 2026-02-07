@@ -41,6 +41,8 @@ func (s *Server) start() error {
 	}
 	s.ln = ln
 
+	go s.loop()
+
 	return s.acceptLoop()
 }
 
@@ -67,9 +69,11 @@ func (s *Server) acceptLoop() error {
 	}
 }
 
-// where we read the data in the server conn
+// we are going to handle the conn, we make a new peer and add this peer to the peer channel for maintenance
 func (s *Server) handleConn(conn net.Conn) {
-
+	peer := NewPeer(conn)
+	s.addPeerCh <- peer
+	peer.readLoop()
 }
 
 func main() {
