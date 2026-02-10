@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"log/slog"
 	"net"
 )
@@ -77,5 +78,6 @@ func (s *Server) handleConn(conn net.Conn) {
 }
 
 func main() {
-
+	server := NewServer(Config{})
+	log.Fatal(server.start())
 }
