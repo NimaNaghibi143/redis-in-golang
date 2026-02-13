@@ -78,7 +78,9 @@ func (s *Server) handleConn(conn net.Conn) {
 	peer := NewPeer(conn)
 	s.addPeerCh <- peer
 	slog.Info("new peer connected", "reniteAddre", conn.RemoteAddr())
-	peer.readLoop()
+	if err := peer.readLoop(); err != nil {
+		slog.Error("peer read error", "err", err, "remoteAddr", conn.RemoteAddr())
+	}
 }
 
 func main() {
