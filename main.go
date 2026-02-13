@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"log/slog"
 	"net"
@@ -20,6 +21,7 @@ type Server struct {
 	ln        net.Listener
 	addPeerCh chan *Peer
 	quitCh    chan struct{}
+	msgCh     chan []byte
 }
 
 // factory method, enduring the server has a valid port to listen on
@@ -32,6 +34,7 @@ func NewServer(cfg Config) *Server {
 		peers:     make(map[*Peer]bool),
 		addPeerCh: make(chan *Peer),
 		quitCh:    make(chan struct{}),
+		msgCh:     make(chan []byte),
 	}
 }
 
@@ -53,6 +56,8 @@ func (s *Server) start() error {
 func (s *Server) loop() {
 	for {
 		select {
+		case rawMsg := <-s.msgCh:
+			fmt.Println(rawMsg)
 		case <-s.quitCh:
 			return
 		case peer := <-s.addPeerCh:
@@ -75,7 +80,7 @@ func (s *Server) acceptLoop() error {
 
 // we are going to handle the conn, we make a new peer and add this peer to the peer channel for maintenance
 func (s *Server) handleConn(conn net.Conn) {
-	peer := NewPeer(conn)
+	peer := NewPeer(conn, s.msgCh)
 	s.addPeerCh <- peer
 	slog.Info("new peer connected", "reniteAddre", conn.RemoteAddr())
 	if err := peer.readLoop(); err != nil {
