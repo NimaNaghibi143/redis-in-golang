@@ -53,11 +53,18 @@ func (s *Server) start() error {
 	return s.acceptLoop()
 }
 
+func (s *Server) handleRawMessage(rawMsg []byte) error {
+	fmt.Println(string(rawMsg))
+	return nil
+}
+
 func (s *Server) loop() {
 	for {
 		select {
 		case rawMsg := <-s.msgCh:
-			fmt.Println(rawMsg)
+			if err := s.handleRawMessage(rawMsg); err != nil {
+				slog.Error("raw message error", "listenAddr", s.ListenAddr)
+			}
 		case <-s.quitCh:
 			return
 		case peer := <-s.addPeerCh:
