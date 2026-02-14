@@ -1,0 +1,32 @@
+# TCP Server
+
+A lightweight, concurrent **TCP Server** implementation in Go. This project demonstrates idiomatic Go patterns, including the use of channels for state management, goroutines for connection handling, and the `slog` package for structured logging.
+
+##  Features
+
+* **Concurrent Connection Handling:** Uses goroutines to manage multiple peer connections simultaneously without blocking.
+* **Channel-Based Communication:** Safely handles peer registration and message processing using Go channels.
+* **Structured Logging:** Implements `slog` for modern, structured log output.
+* **Robust Peer Management:** Decoupled `Peer` logic for reading raw TCP streams into a centralized message buffer.
+
+##  Architecture
+
+The server is built on three main components:
+
+1. **Server:** Manages the listener socket, peer registry, and the main event loop.
+2. **Peer:** Represents a connected client. Each peer runs its own `readLoop` to stream data back to the server.
+3. **Message Loop:** A central `select` block that processes incoming raw messages and peer additions sequentially to avoid race conditions.
+
+### Testing the Connection
+
+You can test the server using `netcat` or `telnet`:
+
+```bash
+# Connect to the server
+nc/telnet localhost 5001
+
+# Type a message and hit Enter
+Yo baby!
+
+```
+```
