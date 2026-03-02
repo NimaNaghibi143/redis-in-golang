@@ -30,3 +30,21 @@ Yo baby!
 
 ```
 ```
+## Redis serialization protocol (RESP):
+
+Redis serialization protocol (RESP) is the wire protocol that clients implement.
+
+To communicate with the Redis server, Redis clients use the protocol calld REdis Serialization Protocol (RESP).
+while the protocol was desgined specifically for Redis, you can use it for other client-server software projects.
+
+RESP is a compromise among the folowing considerations:
+
+    - Simple to implement.
+    - Fast to parse.
+    - Human readable.
+
+RESP can serilize different data types including integers, strings, and arrays. it also features an error-specific type. A client sends a request to the Redis server as an array of strings. the array's content are 
+the command and it's arguments that the server should execute. The server's reply type is command-specific.
+
+RESP is binary-safe and uses prefixed length to transfer bulk data so it does not require processing bulk data
+transferred from one process to another.
