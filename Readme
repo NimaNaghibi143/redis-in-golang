@@ -29,7 +29,7 @@ nc/telnet localhost 5001
 Yo baby!
 
 ```
-```
+
 ## Redis serialization protocol (RESP):
 
 Redis serialization protocol (RESP) is the wire protocol that clients implement.
@@ -39,12 +39,29 @@ while the protocol was desgined specifically for Redis, you can use it for other
 
 RESP is a compromise among the folowing considerations:
 
-    - Simple to implement.
-    - Fast to parse.
-    - Human readable.
+* Simple to implement.
+* Fast to parse.
+* Human readable.
 
 RESP can serilize different data types including integers, strings, and arrays. it also features an error-specific type. A client sends a request to the Redis server as an array of strings. the array's content are 
 the command and it's arguments that the server should execute. The server's reply type is command-specific.
 
 RESP is binary-safe and uses prefixed length to transfer bulk data so it does not require processing bulk data
 transferred from one process to another.
+
+## What is tidwall/res?
+
+tidwall/resp is a Go library for low-latency, high-performance HTTP response writing. It’s designed to significantly speed up the process of sending HTTP responses, particularly when dealing with a large number of requests (e.g., in web servers, API gateways, or high-throughput applications).
+
+## Key Features & How It Works:
+
+* Buffered Writes: Instead of writing each HTTP header or body chunk individually to the network, resp buffers    these chunks in memory. This dramatically reduces the overhead of the I/O operations.
+
+* Non-Blocking: The library is designed to be used with Go's sync.WaitGroup or similar mechanisms for managing concurrency, allowing it to handle requests concurrently without blocking.
+
+* Concurrency-Friendly: It’s built to be used within Go's goroutines, making it perfect for handling multiple incoming HTTP requests simultaneously.
+
+* Memory Efficiency: It’s designed to minimize memory usage.
+
+* HTTP/1.1 & HTTP/2 Support: resp supports both HTTP/1.1 and HTTP/2, allowing you to choose the best protocol for your application. (You generally want HTTP/2 for modern web applications.)
+
