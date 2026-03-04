@@ -25,7 +25,7 @@ func TestProtocol(t *testing.T) {
 		fmt.Printf("Read %s\n", v.Type())
 		if v.Type() == resp.Array {
 			for i, v := range v.Array() {
-				fmt.Printf("  #%d %s, value: '%s'\n", i, v.Type(), v)
+				fmt.Printf("%v\n", v)
 			}
 		}
 	}

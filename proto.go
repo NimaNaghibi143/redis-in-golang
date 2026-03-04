@@ -10,6 +10,9 @@ import (
 )
 
 // we need to implement redis serializtion protocol which clients use to communicate with the redis server.
+const (
+	CommandSET = "SET"
+)
 
 type Command interface {
 }
@@ -33,7 +36,7 @@ func parseCommand(raw string) (Command, error) {
 		fmt.Printf("Read %s\n", v.Type())
 		if v.Type() == resp.Array {
 			for i, v := range v.Array() {
-				fmt.Printf("  #%d %s, value: '%s'\n", i, v.Type(), v)
+				fmt.Printf("%v\n", v)
 			}
 		}
 	}
