@@ -2,7 +2,7 @@
 
 A lightweight, concurrent **TCP Server** implementation in Go. This project demonstrates idiomatic Go patterns, including the use of channels for state management, goroutines for connection handling, and the `slog` package for structured logging.
 
-##  Features
+## Features
 
 * **Concurrent Connection Handling:** Uses goroutines to manage multiple peer connections simultaneously without blocking.
 * **Channel-Based Communication:** Safely handles peer registration and message processing using Go channels.
